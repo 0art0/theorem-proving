@@ -27,8 +27,7 @@ def are_collinear(p_1, p_2, p_3):
     #(y_2 - y_1)*(x_3 - x_1) == (y_3 - y_1)*(x_3 - x_1)
     return ( (p_2[1] - p_1[1])*(p_3[0] - p_1[0]) == (p_3[1] - p_1[1])*(p_2[0] - p_1[0]) )
 
-def square(x):
-    return x**2
+square = lambda x:  x**2
 
 def d(p, q):
     #returns the square of the Euclidean distance between points p and q
@@ -52,6 +51,8 @@ three_not_in_bounds = And([Not(in_bounds(r)), Not(in_bounds(s)), Not(in_bounds(t
 
 # this is the equation that the distances (rather, the squares of the distances) must satisfy
 dist_eq = d(A, D) * d(B, E) * d(C, F) == d(D, B) * d(E, C) * d(F, A)
+
+print(dist_eq)
 # %%s
 #these are the "forward" and "backward" statements of the theorem
 menelaus_thm_fwd = Implies(And(Not(are_collinear(A, B, C)), are_collinear(D, E, F)), dist_eq)
