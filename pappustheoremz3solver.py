@@ -1,13 +1,6 @@
 # %%
 from z3 import *
 
-def point(i):
-    exec("x{j} = Real('x{j}')".format(j = i))
-    exec("y{j} = Real('y{j}')".format(j = i))
-
-    return eval("(x{j}, y{j})".format(j = i))
-
-# %%
 #initialising all the points
 
 # `a b c` are collinear
@@ -24,6 +17,8 @@ for (i, s) in enumerate(('a', 'b', 'c', 'A', 'B', 'C', 'P', 'Q', 'R')):
     #create the point
     exec("{v} = (x_{j}, y_{j})".format(v = s, j = i))
 
+dummy = Real('dummy')
+
 # %%
 def are_collinear(p_1, p_2, p_3):
     #the condition for collinearity
@@ -32,14 +27,12 @@ def are_collinear(p_1, p_2, p_3):
 
 def all_distinct(pts):
     #checks whether all points in the list `pts` are distinct
-    return [Or(Not(p[0] == q[0]), Not(p[1] == q[1])) for (i, p) in enumerate(pts) for (j, q) in enumerate(pts) if p != q]
+    return [Or(Not(p[0] == q[0]), Not(p[1] == q[1])) for (i, p) in enumerate(pts) for (j, q) in enumerate(pts) if j < i]
 
 def parallel(p_1, p_2, q_1, q_2):
     #checks whether the line passing through p_1 and p_2 is parallel to 
     # the line passing through q_1 and q_2
-
     return (p_2[1] - p_1[1])*(q_2[0] - q_1[0]) == (p_2[0] - p_1[0])*(q_2[1] - q_1[1])
-
 # %%
 #this is a formulation of the second statement here - https://en.wikipedia.org/wiki/Pappus's_hexagon_theorem#Other_statements_of_the_theorem
 
@@ -52,9 +45,7 @@ pappus_theorem = Implies(And([are_collinear(p, q, r) for (p, q, r) in (
     (A, b, P), (B, a, P),
     (B, c, Q), (C, b, Q),
     (C, a, R), (A, c, R)
-)] + [Not(parallel(A, B, a, b))]
+)] + [Not(parallel(A, B, a, b)), dummy**2 == dummy**2]
 ), are_collinear(P, Q, R))
 # %%
 soln = solve(Not(pappus_theorem))
-
-# %%
