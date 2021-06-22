@@ -1,13 +1,13 @@
 using Base: Symbol, Number, String
 
-abstract type Function <: Number end
+abstract type SpecialFunction <: Number end
 abstract type Indeterminate end
 
 for v ∈ (:X, :Y, :Z, :K, :N)
     @eval abstract type $v <: Indeterminate end
 end
 
-struct Polynomial{T <: Number, V <: Indeterminate} <: Function
+struct Polynomial{T <: Number, V <: Indeterminate} <: SpecialFunction
     coefs::Vector{T}
     degree::Int
 
@@ -40,7 +40,7 @@ one(::Type{Polynomial{T, V}}) where {T <: Number, V <: Indeterminate} = Polynomi
 one(::Type{Polynomial})::Polynomial = Polynomial([1])
 
 Base.show(io::IO, p::Polynomial{T, V}) where {T <: Number, V <: Indeterminate} = print(io, join(reverse(vcat(["$(p[0])"], iszero(p[1]) ? String[] : ["$(p[1])$(V)"] , ["$(p[i])$(V)^$i" for i ∈ 2:p.degree if p[i] != zero(T)])), " + "))
-Base.show(io::IO, p::Polynomial{Polynomial{T, U}, V}) where {T <: Number, U <: Indeterminate, V <: Indeterminate} = print(io, join(reverse(vcat(["($(p[0]))"],  (iszero(p[1]) ? String[] : ["($(p[1])$(V))"]) , ["($(p[i]))$(V)^$i" for i ∈ 2:p.degree if p[i] != zero(T)])), " + "))
+Base.show(io::IO, p::Polynomial{Polynomial{T, U}, V}) where {T <: Number, U <: Indeterminate, V <: Indeterminate} = print(io, join(reverse(vcat(["($(p[0]))"],  (iszero(p[1]) ? String[] : ["($(p[1]))$(V)"]) , ["($(p[i]))$(V)^$i" for i ∈ 2:p.degree if p[i] != zero(T)])), " + "))
 
 (p::Polynomial)(x) = evalpoly(x, p.coefs) 
 

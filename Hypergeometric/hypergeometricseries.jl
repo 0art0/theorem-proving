@@ -1,6 +1,6 @@
 include("polynomials.jl")
 
-struct HypergeometricTerm{T, V} <: Function where {T <: Number, V <: Indeterminate}
+struct HypergeometricTerm{T, V} <: SpecialFunction where {T <: Number, V <: Indeterminate}
     num::Polynomial{T, V}
     den::Polynomial{T, V}
 end
