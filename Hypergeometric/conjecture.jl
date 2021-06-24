@@ -34,6 +34,6 @@ end
 
 for (v, f) ∈ dictionary
     if length(f) > 1
-        println((v))
+        println((v, f))
     end
 end
