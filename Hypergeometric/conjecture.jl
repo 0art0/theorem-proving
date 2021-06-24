@@ -9,9 +9,9 @@ Base.rand(::Type{HypergeometricFunction{Int, U, V}}) where {U <: Indeterminate, 
 
 matches = 5
 
-dictionary = Dict{NTuple{matches, Rational}, Vector{Function}}()
+dictionary = Dict{NTuple{matches, Rational}, Vector{SpecialFunction}}()
 
-for _ ∈ 1:50_000
+for _ ∈ 1:10_000
     try
         h = rand() < 0.5 ? rand(HypergeometricFunction{Int, K, N}) : rand(HypergeometricTerm{Int, N})
         values = ntuple(i -> h(i), matches)
@@ -25,7 +25,7 @@ for _ ∈ 1:50_000
                 push!(dictionary[values], h)
             end
         else
-            dictionary[values] = Function[h]
+            dictionary[values] = SpecialFunction[h]
         end
     catch error
         #print(error)

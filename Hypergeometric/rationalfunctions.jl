@@ -1,6 +1,6 @@
 include("polynomials.jl")
 
-struct RationalFunction{T, V} <: Function where {T <: Number, V <: Indeterminate}
+struct RationalFunction{T, V} <: SpecialFunction where {T <: Number, V <: Indeterminate}
     num::Polynomial{T, V}
     den::Polynomial{T, V}
 
